@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import math
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ def calcular_fatorial(n):
     if n < 0:
         return "Erro: O fatorial não está definido para números negativos."
     resultado = math.factorial(n)
-    return f"O fatorial de {n} é {resultado}"
+    return f"A fatorial de {n} é {resultado}"
 
 def calcular_arranjo(n, r):
     if n < 0 or r < 0:
@@ -65,7 +65,7 @@ def calcular():
     else:
         return "Erro: Função não reconhecida.", 400
     
-    return jsonify({'mensagem': resultado})
+    return resultado
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
