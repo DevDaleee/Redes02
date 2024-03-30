@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 import math
 
 app = Flask(__name__)
@@ -14,6 +14,10 @@ def calcular_combinacao(n, r):
 
 def calcular_permutacao(n):
     return str(math.perm(n, n))
+
+@app.route('/')
+def index():
+    return "Bem-vindo! Use as rotas '/fatorial', '/arranjo', '/combinacao' ou '/permutacao'."
 
 @app.route('/fatorial')
 def fatorial():
