@@ -15,7 +15,7 @@ def calcular_permutacao(n):
 
 def main():
     host = ''
-    port = 12345
+    port = 8000
 
     servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     servidor_socket.bind((host, port))
