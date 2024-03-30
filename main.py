@@ -1,25 +1,37 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import math
 
 app = Flask(__name__)
 
 def calcular_fatorial(n):
-    return str(math.factorial(n))
+    if n < 0:
+        return "Erro: O fatorial não está definido para números negativos."
+    resultado = math.factorial(n)
+    return f"O fatorial de {n} é {resultado}"
 
 def calcular_arranjo(n, r):
+    if n < 0 or r < 0:
+        return "Erro: O arranjo não está definido para números negativos."
     try:
-        return str(math.perm(n, r))
+        resultado = math.perm(n, r)
+        return f"O arranjo de {n} elementos tomados {r} é {resultado}"
     except ValueError as e:
         return f"Erro ao calcular o arranjo de {n} elementos tomados {r}: {str(e)}"
 
 def calcular_combinacao(n, r):
+    if n < 0 or r < 0:
+        return "Erro: A combinação não está definida para números negativos."
     try:
-        return str(math.comb(n, r))
+        resultado = math.comb(n, r)
+        return f"A combinação de {n} elementos tomados {r} é {resultado}"
     except ValueError as e:
         return f"Erro ao calcular a combinação de {n} elementos tomados {r}: {str(e)}"
 
 def calcular_permutacao(n):
-    return str(math.perm(n, n))
+    if n < 0:
+        return "Erro: A permutação não está definida para números negativos."
+    resultado = math.perm(n, n)
+    return f"A permutação de {n} elementos é {resultado}"
 
 @app.route('/')
 def index():
@@ -28,6 +40,9 @@ def index():
 @app.route('/calcular', methods=['POST'])
 def calcular():
     data = request.json
+    if not data:
+        return "Erro: Nenhum dado foi enviado.", 400
+
     if 'funcao' not in data:
         return "Erro: 'funcao' não especificada.", 400
     
@@ -50,7 +65,7 @@ def calcular():
     else:
         return "Erro: Função não reconhecida.", 400
     
-    return resultado
+    return jsonify({'mensagem': resultado})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
