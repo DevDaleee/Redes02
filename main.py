@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import math
 
 app = Flask(__name__)
@@ -21,29 +21,36 @@ def calcular_combinacao(n, r):
 def calcular_permutacao(n):
     return str(math.perm(n, n))
 
-@app.route('/fatorial')
-def fatorial():
-    numeros = list(map(int, request.args.getlist('numeros')))
-    resultado = calcular_fatorial(*numeros)
-    return jsonify({'resultado': resultado})
+@app.route('/')
+def index():
+    return "Servidor de cálculos está em execução!"
 
-@app.route('/arranjo')
-def arranjo():
-    numeros = list(map(int, request.args.getlist('numeros')))
-    resultado = calcular_arranjo(*numeros)
-    return jsonify({'resultado': resultado})
-
-@app.route('/combinacao')
-def combinacao():
-    numeros = list(map(int, request.args.getlist('numeros')))
-    resultado = calcular_combinacao(*numeros)
-    return jsonify({'resultado': resultado})
-
-@app.route('/permutacao')
-def permutacao():
-    numeros = list(map(int, request.args.getlist('numeros')))
-    resultado = calcular_permutacao(*numeros)
-    return jsonify({'resultado': resultado})
+@app.route('/calcular', methods=['POST'])
+def calcular():
+    data = request.json
+    if 'funcao' not in data:
+        return "Erro: 'funcao' não especificada.", 400
+    
+    if data['funcao'] == 'fatorial':
+        if 'numero' not in data:
+            return "Erro: 'numero' não especificado para o cálculo do fatorial.", 400
+        resultado = calcular_fatorial(data['numero'])
+    elif data['funcao'] == 'arranjo':
+        if 'n' not in data or 'r' not in data:
+            return "Erro: 'n' ou 'r' não especificados para o cálculo do arranjo.", 400
+        resultado = calcular_arranjo(data['n'], data['r'])
+    elif data['funcao'] == 'combinacao':
+        if 'n' not in data or 'r' not in data:
+            return "Erro: 'n' ou 'r' não especificados para o cálculo da combinação.", 400
+        resultado = calcular_combinacao(data['n'], data['r'])
+    elif data['funcao'] == 'permutacao':
+        if 'numero' not in data:
+            return "Erro: 'numero' não especificado para o cálculo da permutação.", 400
+        resultado = calcular_permutacao(data['numero'])
+    else:
+        return "Erro: Função não reconhecida.", 400
+    
+    return resultado
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
