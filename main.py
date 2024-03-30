@@ -1,5 +1,7 @@
-import socket
+from flask import Flask, request, jsonify
 import math
+
+app = Flask(__name__)
 
 def calcular_fatorial(n):
     return str(math.factorial(n))
@@ -13,36 +15,29 @@ def calcular_combinacao(n, r):
 def calcular_permutacao(n):
     return str(math.perm(n, n))
 
-def main():
-    host = ''
-    port = 8000
+@app.route('/fatorial')
+def fatorial():
+    numeros = list(map(int, request.args.getlist('numeros')))
+    resultado = calcular_fatorial(*numeros)
+    return jsonify({'resultado': resultado})
 
-    servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    servidor_socket.bind((host, port))
+@app.route('/arranjo')
+def arranjo():
+    numeros = list(map(int, request.args.getlist('numeros')))
+    resultado = calcular_arranjo(*numeros)
+    return jsonify({'resultado': resultado})
 
-    servidor_socket.listen(1)
+@app.route('/combinacao')
+def combinacao():
+    numeros = list(map(int, request.args.getlist('numeros')))
+    resultado = calcular_combinacao(*numeros)
+    return jsonify({'resultado': resultado})
 
-    while True:
-        conexao, endereco = servidor_socket.accept()
-
-        dados = conexao.recv(1024).decode()
-        comando, *numeros = dados.split(',')
-
-        numeros = list(map(int, numeros))
-
-        if comando == "fatorial":
-            resultado = calcular_fatorial(*numeros)
-        elif comando == "arranjo":
-            resultado = calcular_arranjo(*numeros)
-        elif comando == "combinacao":
-            resultado = calcular_combinacao(*numeros)
-        elif comando == "permutacao":
-            resultado = calcular_permutacao(*numeros)
-        else:
-            resultado = "Função não reconhecida"
-
-        conexao.send(resultado.encode())
-        conexao.close()
+@app.route('/permutacao')
+def permutacao():
+    numeros = list(map(int, request.args.getlist('numeros')))
+    resultado = calcular_permutacao(*numeros)
+    return jsonify({'resultado': resultado})
 
 if __name__ == "__main__":
-    main()
+    app.run(host='0.0.0.0', port=8000)
