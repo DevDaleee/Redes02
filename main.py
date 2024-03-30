@@ -2,16 +2,16 @@ import socket
 import math
 
 def calcular_fatorial(n):
-    return math.factorial(n)
+    return str(math.factorial(n))
 
 def calcular_arranjo(n, r):
-    return math.perm(n, r)
+    return str(math.perm(n, r))
 
 def calcular_combinacao(n, r):
-    return math.comb(n, r)
+    return str(math.comb(n, r))
 
 def calcular_permutacao(n):
-    return math.perm(n, n)
+    return str(math.perm(n, n))
 
 def main():
     host = ''
@@ -26,15 +26,18 @@ def main():
         conexao, endereco = servidor_socket.accept()
 
         dados = conexao.recv(1024).decode()
+        comando, *numeros = dados.split(',')
 
-        if dados == "fatorial":
-            resultado = str(calcular_fatorial(5))
-        elif dados == "arranjo":
-            resultado = str(calcular_arranjo(5, 2))
-        elif dados == "combinacao":
-            resultado = str(calcular_combinacao(5, 2))
-        elif dados == "permutacao":
-            resultado = str(calcular_permutacao(5))
+        numeros = list(map(int, numeros))
+
+        if comando == "fatorial":
+            resultado = calcular_fatorial(*numeros)
+        elif comando == "arranjo":
+            resultado = calcular_arranjo(*numeros)
+        elif comando == "combinacao":
+            resultado = calcular_combinacao(*numeros)
+        elif comando == "permutacao":
+            resultado = calcular_permutacao(*numeros)
         else:
             resultado = "Função não reconhecida"
 
