@@ -1,0 +1,19 @@
+A) 
+Min Delay: 0.009894847869873047
+AVG Delay: 0.011449608087539673
+Max Delay: 1.3366632461547852
+Std Delay: 0.04194891367522106
+
+B)
+Min Delay: 0.010027170181274414
+AVG Delay: 0.21585300827026369
+Max Delay: 205.7319917678833
+Std Delay: 6.505496440636789
+
+teve um leve delay
+
+
+C) Caso uma mensagem for perdida durante a comunicação, ela não será recebida pelo servidor.
+Isso pode causar discrêpancias nos calculos de atraso. Além disso, o programa cliente pode 
+precisar ser de algum tipo de controle de erro, que será mostrado no arquivo client_EC.py 
+a fim de demonstrar como funcionaria o mesmissimo código agora com controle de erros.
