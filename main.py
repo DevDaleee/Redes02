@@ -1,45 +1,46 @@
-import socket
+from flask import Flask, request, jsonify
 import math
 
-def calcular_fatorial(n):
+app = Flask(__name__)
+
+def factorial(n):
     return math.factorial(n)
 
-def calcular_arranjo(n, r):
+def permutation(n, r):
     return math.perm(n, r)
 
-def calcular_combinacao(n, r):
+def combination(n, r):
     return math.comb(n, r)
 
-def calcular_permutacao(n):
-    return math.perm(n, n)
+def arrangement(n, r):
+    return math.perm(n, r)
 
-def main():
-    host = ''
-    port = 8000
+@app.route('/factorial')
+def calc_factorial():
+    n = int(request.args.get('n'))
+    result = factorial(n)
+    return jsonify({'result': result})
 
-    servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    servidor_socket.bind((host, port))
+@app.route('/permutation')
+def calc_permutation():
+    n = int(request.args.get('n'))
+    r = int(request.args.get('r'))
+    result = permutation(n, r)
+    return jsonify({'result': result})
 
-    servidor_socket.listen(1)
+@app.route('/combination')
+def calc_combination():
+    n = int(request.args.get('n'))
+    r = int(request.args.get('r'))
+    result = combination(n, r)
+    return jsonify({'result': result})
 
-    while True:
-        conexao, endereco = servidor_socket.accept()
+@app.route('/arrangement')
+def calc_arrangement():
+    n = int(request.args.get('n'))
+    r = int(request.args.get('r'))
+    result = arrangement(n, r)
+    return jsonify({'result': result})
 
-        dados = conexao.recv(1024).decode()
-
-        if dados == "fatorial":
-            resultado = str(calcular_fatorial(5))
-        elif dados == "arranjo":
-            resultado = str(calcular_arranjo(5, 2))
-        elif dados == "combinacao":
-            resultado = str(calcular_combinacao(5, 2))
-        elif dados == "permutacao":
-            resultado = str(calcular_permutacao(5))
-        else:
-            resultado = "Função não reconhecida"
-
-        conexao.send(resultado.encode())
-        conexao.close()
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(debug=True)
