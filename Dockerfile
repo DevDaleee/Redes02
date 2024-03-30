@@ -6,7 +6,11 @@ WORKDIR /app
 # Copia o código fonte para o diretório de trabalho
 COPY main.py /app/main.py
 
-# Instala o Flask
+# Cria e ativa o ambiente virtual
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+# Instala o Flask dentro do ambiente virtual
 RUN pip install flask
 
 # Expõe a porta 8000 para o mundo exterior
