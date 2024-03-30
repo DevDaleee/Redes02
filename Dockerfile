@@ -3,6 +3,9 @@ FROM python:3.9-slim
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
+# Instalação do Flask
+RUN pip install flask
+
 # Copia o código fonte para o diretório de trabalho
 COPY main.py /app/main.py
 
