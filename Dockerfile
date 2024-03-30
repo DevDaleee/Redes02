@@ -11,7 +11,7 @@ RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
 # Instala o Flask dentro do ambiente virtual
-RUN pip install flask
+RUN pip install math
 
 # Expõe a porta 8000 para o mundo exterior
 EXPOSE 8000
