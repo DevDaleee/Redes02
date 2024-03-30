@@ -10,13 +10,13 @@ def calcular_arranjo(n, r):
     try:
         return str(math.perm(n, r))
     except ValueError as e:
-        return f"Erro ao calcular o arranjo: {str(e)}"
+        return f"Erro ao calcular o arranjo de {n} elementos tomados {r}: {str(e)}"
 
 def calcular_combinacao(n, r):
     try:
         return str(math.comb(n, r))
     except ValueError as e:
-        return f"Erro ao calcular a combinação: {str(e)}"
+        return f"Erro ao calcular a combinação de {n} elementos tomados {r}: {str(e)}"
 
 def calcular_permutacao(n):
     return str(math.perm(n, n))
